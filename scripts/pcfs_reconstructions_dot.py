@@ -88,21 +88,6 @@ def multi_model_g2_prediction(model_name, ckpts, X):
     g2_AAE = tuple((g2s_pred_μ, g2s_pred_σ, g2s_pred_submodels))
     return g2s_pred_μ, g2s_pred_σ, g2s_pred_submodels, g2_AAE
 
-
-""" Get predictions from multiple single Conv1DAutoEncoder models """
-# model_name = 'Conv1DAutoEncoder'
-# ckpts = [
-#     "Conv1DAutoEncoder_kernel3_model1.ckpt",
-#     "Conv1DAutoEncoder_kernel3_model2.ckpt",
-#     "Conv1DAutoEncoder_kernel3_model3.ckpt",
-#     "Conv1DAutoEncoder_kernel3_model4.ckpt",
-#     "Conv1DAutoEncoder_kernel3_model5.ckpt",
-#     # "Conv1DAutoEncoder_kernel7.ckpt",
-#     # "Conv1DAutoEncoder_kernel11.ckpt",
-#     # "Conv1DAutoEncoder_kernel15.ckpt",
-# ]
-# g2s_pred_μ, g2s_pred_σ, g2s_pred_submodels, g2_AAE = multi_model_g2_prediction(model_name, ckpts, X)
-
 """ Remove tau remove raw g2 array and rescale g2s back to original intensities (un-normalize) """
 g2_intensites      = g2s_norm[:, :, 1] # Get intensites back out of g2
 g2s_norm           = g2_intensites # Get rid of τ from g2_norm array, now that it isn't needed after running through nn model
@@ -127,13 +112,6 @@ pickle_out = open(dot_path+dot_name, "wb"); pickle.dump(dot, pickle_out); pickle
 τ = np.exp(τ)
 make_fig((3, 2))
 idx = -1
-# plt.plot(dot.g2_x[0, :])
-# plt.plot(dot.g2[idx, :])
-# plt.plot(dot.tau, dot.g2[idx, :])
 plt.plot(τ, g2s_interp[idx, :], 'k')
 plt.plot(τ, g2s_pred_μ[idx, :])
-# plt.plot(τ, g2s_pred_μ[idx, :] + 2*g2s_pred_σ[idx, :])
-# plt.plot(τ, g2s_pred_μ[idx, :] - 2*g2s_pred_σ[idx, :])
-# plt.plot(τ, g2s_pred_submodels[0, 0, :140])
-# plt.ylim([0.75, 1.02])
 plt.xscale('log')
